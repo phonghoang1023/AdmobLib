@@ -117,11 +117,16 @@ object Admob {
         })
     }
 
-    fun showAdmobInter(activity: Activity, onFinished: (success: Boolean) -> Unit) {
-        if (mIsShowing || System.currentTimeMillis() - mLastTimeShowedInter < mLimitTime) return
+    fun showAdmobInter(activity: Activity, onFinished: () -> Unit) {
+        if (mIsShowing) return
 
         if (System.currentTimeMillis() - mTimeStamp < 1000) {
             mTimeStamp = System.currentTimeMillis()
+            return
+        }
+
+        if (System.currentTimeMillis() - mLastTimeShowedInter < mLimitTime) {
+            onFinished()
             return
         }
 
@@ -133,11 +138,11 @@ object Admob {
         } else {
             Log.d("TAG", "The interstitial ad wasn't ready yet.")
             mIsShowing = false
-            onFinished(false)
+            onFinished()
         }
     }
 
-    private fun initCallback(onFinished: (success: Boolean) -> Unit) {
+    private fun initCallback(onFinished: () -> Unit) {
         mInterstitialAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
 //                override fun onAdClicked() {
 //                    Log.d(TAG, "Ad was clicked.")
@@ -155,7 +160,7 @@ object Admob {
                 Log.d(TAG, "Ad dismissed fullscreen content.")
                 mInterstitialAd = null
                 mIsShowing = false
-                onFinished(true)
+                onFinished()
                 mLastTimeShowedInter = System.currentTimeMillis()
             }
 
@@ -163,7 +168,7 @@ object Admob {
                 Log.e(TAG, "Ad failed to show fullscreen content.")
                 mInterstitialAd = null
                 mIsShowing = false
-                onFinished(false)
+                onFinished()
             }
 
         }
