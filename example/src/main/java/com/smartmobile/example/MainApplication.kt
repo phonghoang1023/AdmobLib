@@ -1,6 +1,7 @@
 package com.smartmobile.example
 
 import android.app.Application
+import com.smartmobile.admob.Admob
 
 class MainApplication : Application() {
 

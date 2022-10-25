@@ -1,6 +1,7 @@
 package com.smartmobile.example
 
 import android.content.Intent
+import com.smartmobile.admob.Admob
 import com.smartmobile.example.databinding.ActivityMainBinding
 
 class MainActivity : BaseActivity<ActivityMainBinding>() {
@@ -16,6 +17,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     private fun loadAdmob() {
         Admob.loadInter(this, "")
+        Admob.showAdBanner(this, "", binding.frBannerTop, true)
         Admob.showAdBanner(this, "", binding.frBanner)
         Admob.showAdNative(this, "", binding.frNative)
     }

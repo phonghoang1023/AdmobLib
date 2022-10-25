@@ -1,4 +1,4 @@
-package com.smartmobile.example
+package com.smartmobile.admob
 
 import android.content.res.Resources
 import android.util.Log

@@ -7,11 +7,17 @@
     tools:context="com.smartmobile.example.MainActivity">
 
     <FrameLayout
+        android:id="@+id/frBannerTop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <FrameLayout
         android:id="@+id/frNative"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/frBannerTop" />
 
     <Button
         android:id="@+id/btnInter"

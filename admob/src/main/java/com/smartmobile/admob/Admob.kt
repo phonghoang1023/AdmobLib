@@ -1,11 +1,14 @@
-package com.smartmobile.example
+package com.smartmobile.admob
 
 import android.app.Activity
 import android.content.Context
+import android.graphics.Color
 import android.util.DisplayMetrics
 import android.util.Log
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.FrameLayout
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.gms.ads.*
@@ -30,8 +33,8 @@ object Admob {
 
     fun init(
         context: Context,
-        isTesting: Boolean = true,
-        isEnableAd: Boolean = true,
+        isTesting: Boolean,
+        isEnableAd: Boolean,
         limitSecond: Int = 30
     ) {
         mIsTesting = isTesting
@@ -40,7 +43,12 @@ object Admob {
         MobileAds.initialize(context.applicationContext) { }
     }
 
-    fun showAdBanner(activity: Activity, adId: String, viewGroup: FrameLayout) {
+    fun showAdBanner(
+        activity: Activity,
+        adId: String,
+        viewGroup: FrameLayout,
+        topBanner: Boolean = false
+    ) {
         if (!mIsEnableAd) return
 
         val adSize = getAdSize(activity, viewGroup)
@@ -54,10 +62,17 @@ object Admob {
         val adView = AdView(activity)
         adView.setAdSize(adSize)
         adView.adUnitId = bannerId
+        val divider = View(activity).apply {
+            layoutParams = FrameLayout.LayoutParams(MATCH_PARENT, 3).apply {
+                if (topBanner) gravity = Gravity.BOTTOM
+            }
+            setBackgroundColor(Color.BLACK)
+        }
 
         viewGroup.removeAllViews()
         viewGroup.addView(shimmer)
         viewGroup.addView(adView)
+        viewGroup.addView(divider)
 
         adView.adListener = object : AdListener() {
             override fun onAdLoaded() {
@@ -70,6 +85,7 @@ object Admob {
                 super.onAdFailedToLoad(p0)
                 shimmer.stopShimmer()
                 shimmer.gone()
+                divider.gone()
             }
         }
 
@@ -196,7 +212,7 @@ object Admob {
      * @param nativeAd the object containing the ad's assets
      * @param unifiedAdBinding the binding object of the layout that has NativeAdView as the root view
      */
-    fun populateNativeAdView(nativeAd: NativeAd, unifiedAdBinding: AdUnifiedBinding) {
+    private fun populateNativeAdView(nativeAd: NativeAd, unifiedAdBinding: AdUnifiedBinding) {
         val nativeAdView = unifiedAdBinding.root
 
         // Set the media view.
