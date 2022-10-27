@@ -34,7 +34,7 @@ afterEvaluate {
 
                 groupId = 'com.github.phonghoang1023'
                 artifactId = 'AdmobLib'
-                version = '3.2'
+                version = '3.3'
             }
         }
     }

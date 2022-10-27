@@ -94,6 +94,8 @@ object Admob {
     }
 
     fun showAdNative(activity: Activity, adId: String, viewGroup: FrameLayout) {
+        if (!mIsEnableAd) return
+
         val adsView = AdUnifiedBinding.inflate(activity.layoutInflater)
         val nativeId = if (mIsTesting) TestAdId.NATIVE_ID else adId
 
